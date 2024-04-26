@@ -1,6 +1,4 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
+const app = require("./init");
 const http = require("http").Server(app);
 const PORT = 4000;
 const socketIO = require("socket.io")(http, {
@@ -8,8 +6,6 @@ const socketIO = require("socket.io")(http, {
     origin: "http://localhost:3000",
   },
 });
-
-app.use(cors());
 
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
