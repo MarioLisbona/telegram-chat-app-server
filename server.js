@@ -1,6 +1,11 @@
 const { app, http } = require("./init");
 const { createSocketServer } = require("./socketServer");
+const { createTelegramBot } = require("./telegramBot");
 const PORT = 4000;
+
+const bot = createTelegramBot();
+
+console.log(bot);
 
 createSocketServer();
 
