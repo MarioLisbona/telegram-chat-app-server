@@ -5,7 +5,7 @@ const socketIO = require("socket.io")(http, {
   },
 });
 
-function createSocketServer() {
+function createSocketServer(bot) {
   socketIO.on("connection", (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
@@ -18,6 +18,11 @@ function createSocketServer() {
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
       socket.disconnect();
+    });
+
+    bot.on("message", (msg) => {
+      console.log("From inside socketIO", msg);
+      socket.emit("message", msg);
     });
   });
 

@@ -5,9 +5,7 @@ const PORT = 4000;
 
 const bot = createTelegramBot();
 
-console.log(bot);
-
-createSocketServer();
+createSocketServer(bot);
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });

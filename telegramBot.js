@@ -8,9 +8,9 @@ function createTelegramBot() {
   // Create a bot instance
   const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
-  bot.on("message", (msg) => {
-    console.log(msg);
-  });
+  // bot.on("message", (msg) => {
+  //   console.log(msg);
+  // });
 
   return bot;
 }
