@@ -1,35 +1,20 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const http = require("http").Server(app);
+const { app, http } = require("./init");
+const { createSocketServer } = require("./socketServer");
+const { createTelegramBot } = require("./telegramBot");
 const PORT = 4000;
-const socketIO = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
 
-app.use(cors());
+// create an instance of the telegram bot
+const bot = createTelegramBot();
 
-socketIO.on("connection", (socket) => {
-  console.log(`⚡: ${socket.id} user just connected!`);
+// open a connection with the client
+createSocketServer(bot);
 
-  socket.on("message", (msg) => {
-    console.log("server got a message ", msg);
-
-    socket.emit("message", "yoyo");
-  });
-
-  socket.on("disconnect", () => {
-    console.log("🔥: A user disconnected");
-    socket.disconnect();
-  });
-});
-
+//using app for home route
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
+// using http to listen on port
 http.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
