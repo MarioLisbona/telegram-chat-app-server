@@ -1,14 +1,8 @@
-const { http } = require("./init");
+const { socketIO } = require("./init");
 
 //setting variables for users array and telegram chat ID
 let users = [];
 let ChatId = "";
-
-const socketIO = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
 
 // function to create and return a socket.io instance with a connection to the client
 function createSocketServer(bot) {
