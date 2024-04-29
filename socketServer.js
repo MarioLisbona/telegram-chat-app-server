@@ -4,13 +4,9 @@ const { http } = require("./init");
 let users = [];
 let ChatId = "";
 
-// connection variables for socket connection
-let clientHost = process.env.CLIENT_HOST || "localhost";
-let clientPort = process.env.CLIENT_PORT || 3000;
-
 const socketIO = require("socket.io")(http, {
   cors: {
-    origin: `http://${clientHost}:${clientPort}`,
+    origin: "http://localhost:3000",
   },
 });
 
