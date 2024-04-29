@@ -44,11 +44,11 @@ function createSocketServer(bot) {
     });
 
     // event handler to receive "message" from telegram bot
-    bot.on("message", (msg) => {
+    bot.on("message", (data) => {
       // log message
-      // console.log("From inside socketIO", msg);
+      console.log("From inside socketIO", data);
       // emit message to all connected client
-      socket.emit("telegramMessage", msg);
+      socket.emit("telegramMessage", data);
     });
   });
 
