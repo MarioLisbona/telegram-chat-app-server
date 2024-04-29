@@ -1,7 +1,7 @@
 const { app, http } = require("./init");
 const { createSocketServer } = require("./socketServer");
 const { createTelegramBot } = require("./telegramBot");
-const PORT = process.env.PORT || 4000;
+const SERVER_PORT = process.env.SERVER_PORT || 4000;
 
 // create an instance of the telegram bot
 const bot = createTelegramBot();
@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
 });
 
 // using http to listen on port
-http.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+http.listen(SERVER_PORT, () => {
+  console.log(`Server listening on ${SERVER_PORT}`);
 });
