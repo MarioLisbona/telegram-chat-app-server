@@ -1,11 +1,18 @@
 const { http } = require("./init");
+
+//setting variables for users array and telegram chat ID
+let users = [];
+let ChatId = "";
+
+// connection variables for socket connection
+let clientHost = process.env.CLIENT_HOST || "localhost";
+let clientPort = process.env.CLIENT_PORT || 3000;
+
 const socketIO = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: `http://${clientHost}:${clientPort}`,
   },
 });
-
-let users = [];
 
 // function to create and return a socket.io instance with a connection to the client
 function createSocketServer(bot) {
@@ -13,13 +20,19 @@ function createSocketServer(bot) {
   socketIO.on("connection", (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
-    //sends the message to all the users on the server
+    // event handler call back for "messasge"
     socket.on("message", (data) => {
-      console.log("logging messge ---->", data);
+      // Receives the message from the chat client
+      // Sends the messages to all connected chat clients
       socketIO.emit("messageResponse", data);
+
+      // sends the message to the telegram bot
+      username = data.name;
+      msg = `(${username}) - ${data.text}`;
+      bot.sendMessage(ChatId, msg);
     });
 
-    //Listens when a new user joins the server
+    //event handler for when a new user joins the server
     socket.on("newUser", (data) => {
       //Adds the new user to the list of users
       users.push(data);
@@ -28,11 +41,13 @@ function createSocketServer(bot) {
       socketIO.emit("newUserResponse", users);
     });
 
+    // event handler for a user typing in the chat client
     socket.on("typing", (data) => {
       socket.broadcast.emit("typingResponse", data);
       console.log(data);
     });
 
+    // event handler for a client disconnecting from the chat client
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
       //Updates the list of users when a user disconnects from the server
@@ -45,9 +60,10 @@ function createSocketServer(bot) {
 
     // event handler to receive "message" from telegram bot
     bot.on("message", (data) => {
-      // log message
-      console.log("From inside socketIO", data);
-      // emit message to all connected client
+      // set the chat ID - require to replay client msgs back to telegram bot
+      ChatId = data.chat.id;
+
+      // emit message to all connected clients
       socket.emit("telegramMessage", data);
     });
   });
