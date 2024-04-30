@@ -14,6 +14,11 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
+app.get("/api", (req, res) => {
+  const serverUrl = `${req.protocol}://${req.hostname}:${PORT}`;
+  res.json({ serverUrl });
+});
+
 // using http to listen on port
 http.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
