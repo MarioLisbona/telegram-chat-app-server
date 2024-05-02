@@ -1,4 +1,4 @@
-const { app, http } = require("./init");
+const { app, http, prisma } = require("./init");
 const { createSocketServer } = require("./socketServer");
 const { createTelegramBot } = require("./telegramBot");
 const PORT = process.env.PORT || 4000;
@@ -12,6 +12,20 @@ createSocketServer(bot);
 //using app for home route
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
+});
+
+app.get("/create", async (req, res) => {
+  const chat = await prisma.chat.create({
+    data: {
+      title: "Chat title",
+    },
+  });
+  res.json(chat);
+});
+
+app.get("/get", async (req, res) => {
+  const chat = await prisma.chat.findMany();
+  res.json(chat);
 });
 
 app.get("/api", (req, res) => {
