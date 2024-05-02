@@ -14,18 +14,16 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
-app.get("/create", async (req, res) => {
-  const chat = await prisma.chat.create({
-    data: {
-      title: "Chat title",
-    },
-  });
-  res.json(chat);
-});
-
 app.get("/get", async (req, res) => {
-  const chat = await prisma.chat.findMany();
-  res.json(chat);
+  const chats = await prisma.chat.findMany();
+
+  // Convert BigInt values to strings, handling null values
+  const serializedChats = chats.map((chat) => ({
+    ...chat,
+    chatId: chat.chatId !== null ? chat.chatId.toString() : null, // Convert chatId to string if not null
+  }));
+
+  res.json(serializedChats);
 });
 
 app.get("/api", (req, res) => {
