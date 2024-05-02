@@ -53,16 +53,21 @@ function createSocketServer(bot) {
       // set the chat ID - require to replay client msgs back to telegram bot
       ChatId = data.chat.id;
       chatTitle = data.chat.title;
-      console.log("data in bot.on--->", data);
 
-      const chat = await prisma.chat.create({
-        data: {
-          chatId: ChatId,
-          title: chatTitle,
-        },
-      });
+      // retreive the array of chat objects
+      const chats = await prisma.chat.findMany();
 
-      console.log("Chat object created", chat);
+      // if the chats array is empty assign the chat Id
+      if (chats.length == 0) {
+        const chat = await prisma.chat.create({
+          data: {
+            chatId: ChatId,
+            title: chatTitle,
+          },
+        });
+
+        console.log("assigning the chat ID", ChatId);
+      }
 
       // emit message to all connected clients
       socket.emit("telegramMessage", data);
