@@ -1,5 +1,5 @@
-const { socketIO, prisma } = require("./init");
-const { getChatId, setChatId } = require("./lib/socketUtils");
+import { socketIO, prisma } from "./init.js";
+import { getChatId, setChatId } from "./lib/socketUtils.js";
 
 //setting variables for users array and telegram chat ID
 let users = [];
@@ -21,8 +21,8 @@ function createSocketServer(bot) {
       socketIO.emit("messageResponse", data);
 
       // sends the message to the telegram bot
-      username = data.name;
-      msg = `(${username}) - ${data.text}`;
+      let username = data.name;
+      let msg = `(${username}) - ${data.text}`;
       bot.sendMessage(chatId, msg);
     });
 
@@ -65,4 +65,4 @@ function createSocketServer(bot) {
   return socketIO;
 }
 
-module.exports = { createSocketServer };
+export { createSocketServer };
