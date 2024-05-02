@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_USER=mario
       - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=prisma-example
+      - POSTGRES_DB=telegram-chat-app
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
