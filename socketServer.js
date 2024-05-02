@@ -1,14 +1,18 @@
-const { socketIO } = require("./init");
+const { socketIO, prisma } = require("./init");
+const { getChatId, setChatId } = require("./lib/socketUtils");
 
 //setting variables for users array and telegram chat ID
 let users = [];
-let ChatId = "";
+let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
 function createSocketServer(bot) {
   // create a socket.io connection to the client
-  socketIO.on("connection", (socket) => {
+  socketIO.on("connection", async (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
+
+    // get the chat ID from the db
+    chatId = await getChatId(prisma);
 
     // event handler call back for "messasge"
     socket.on("message", (data) => {
@@ -19,7 +23,7 @@ function createSocketServer(bot) {
       // sends the message to the telegram bot
       username = data.name;
       msg = `(${username}) - ${data.text}`;
-      bot.sendMessage(ChatId, msg);
+      bot.sendMessage(chatId, msg);
     });
 
     //event handler for when a new user joins the server
@@ -49,9 +53,9 @@ function createSocketServer(bot) {
     });
 
     // event handler to receive "message" from telegram bot
-    bot.on("message", (data) => {
-      // set the chat ID - require to replay client msgs back to telegram bot
-      ChatId = data.chat.id;
+    bot.on("message", async (data) => {
+      // save the chatId to the db
+      setChatId(data, prisma);
 
       // emit message to all connected clients
       socket.emit("telegramMessage", data);

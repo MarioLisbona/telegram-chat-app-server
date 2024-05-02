@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const { PrismaClient } = require("@prisma/client");
 
+const prisma = new PrismaClient();
 // create an express application instance
 const app = express();
 
@@ -24,4 +26,4 @@ const socketIO = require("socket.io")(http, {
 // use cors middleware
 app.use(cors());
 
-module.exports = { app, http, socketIO };
+module.exports = { app, http, socketIO, prisma };
