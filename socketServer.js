@@ -1,8 +1,9 @@
 const { socketIO, prisma } = require("./init");
+const { getChatId, setChatId } = require("./lib/socketUtils");
 
 //setting variables for users array and telegram chat ID
 let users = [];
-let ChatId = "";
+let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
 function createSocketServer(bot) {
@@ -10,10 +11,8 @@ function createSocketServer(bot) {
   socketIO.on("connection", async (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
-    // rfind the first chat object
-    const chatData = await prisma.chat.findFirst();
-    // assign chat ID to variable
-    ChatId = chatData.chatId;
+    // get the chat ID from the db
+    chatId = await getChatId(prisma);
 
     // event handler call back for "messasge"
     socket.on("message", (data) => {
@@ -24,7 +23,7 @@ function createSocketServer(bot) {
       // sends the message to the telegram bot
       username = data.name;
       msg = `(${username}) - ${data.text}`;
-      bot.sendMessage(ChatId, msg);
+      bot.sendMessage(chatId, msg);
     });
 
     //event handler for when a new user joins the server
@@ -55,23 +54,8 @@ function createSocketServer(bot) {
 
     // event handler to receive "message" from telegram bot
     bot.on("message", async (data) => {
-      // set the chat ID - require to replay client msgs back to telegram bot
-      ChatId = data.chat.id;
-      chatTitle = data.chat.title;
-
-      // retreive the array of chat objects
-      const chats = await prisma.chat.findMany();
-
-      // if the chats array is empty assign the chat Id
-      // This will only create a single record for this chat
-      if (chats.length == 0) {
-        const chat = await prisma.chat.create({
-          data: {
-            chatId: ChatId,
-            title: chatTitle,
-          },
-        });
-      }
+      // save the chatId to the db
+      setChatId(data, prisma);
 
       // emit message to all connected clients
       socket.emit("telegramMessage", data);
