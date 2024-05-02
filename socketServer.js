@@ -1,4 +1,4 @@
-const { socketIO } = require("./init");
+const { socketIO, prisma } = require("./init");
 
 //setting variables for users array and telegram chat ID
 let users = [];
@@ -49,9 +49,20 @@ function createSocketServer(bot) {
     });
 
     // event handler to receive "message" from telegram bot
-    bot.on("message", (data) => {
+    bot.on("message", async (data) => {
       // set the chat ID - require to replay client msgs back to telegram bot
       ChatId = data.chat.id;
+      chatTitle = data.chat.title;
+      console.log("data in bot.on--->", data);
+
+      const chat = await prisma.chat.create({
+        data: {
+          chatId: ChatId,
+          title: chatTitle,
+        },
+      });
+
+      console.log("Chat object created", chat);
 
       // emit message to all connected clients
       socket.emit("telegramMessage", data);
