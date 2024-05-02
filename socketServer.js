@@ -7,8 +7,13 @@ let ChatId = "";
 // function to create and return a socket.io instance with a connection to the client
 function createSocketServer(bot) {
   // create a socket.io connection to the client
-  socketIO.on("connection", (socket) => {
+  socketIO.on("connection", async (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
+
+    // rfind the first chat object
+    const chatData = await prisma.chat.findFirst();
+    // assign chat ID to variable
+    ChatId = chatData.chatId;
 
     // event handler call back for "messasge"
     socket.on("message", (data) => {
@@ -58,6 +63,7 @@ function createSocketServer(bot) {
       const chats = await prisma.chat.findMany();
 
       // if the chats array is empty assign the chat Id
+      // This will only create a single record for this chat
       if (chats.length == 0) {
         const chat = await prisma.chat.create({
           data: {
@@ -65,8 +71,6 @@ function createSocketServer(bot) {
             title: chatTitle,
           },
         });
-
-        console.log("assigning the chat ID", ChatId);
       }
 
       // emit message to all connected clients
