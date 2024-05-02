@@ -15,5 +15,6 @@ datasource db {
 
 model Chat {
   id        Int      @id @default(autoincrement())
+  chatId    String?
   title     String
 }
