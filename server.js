@@ -1,6 +1,6 @@
-const { app, http, prisma } = require("./init");
-const { createSocketServer } = require("./socketServer");
-const { createTelegramBot } = require("./telegramBot");
+import { app, httpServer, prisma } from "./init.js";
+import { createSocketServer } from "./socketServer.js";
+import { createTelegramBot } from "./telegramBot.js";
 const PORT = process.env.PORT || 4000;
 
 // create an instance of the telegram bot
@@ -32,6 +32,6 @@ app.get("/api", (req, res) => {
 });
 
 // using http to listen on port
-http.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

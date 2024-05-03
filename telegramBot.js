@@ -1,5 +1,8 @@
-const TelegramBot = require("node-telegram-bot-api");
-require("dotenv").config();
+import TelegramBot from "node-telegram-bot-api";
+import { config as dotenvConfig } from "dotenv";
+
+// Load environment variables from .env file
+dotenvConfig();
 
 // function to create and return a new TelegramBot instance
 function createTelegramBot() {
@@ -12,4 +15,4 @@ function createTelegramBot() {
   return bot;
 }
 
-module.exports = { createTelegramBot };
+export { createTelegramBot };

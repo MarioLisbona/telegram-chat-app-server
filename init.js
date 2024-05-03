@@ -1,14 +1,24 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-const { PrismaClient } = require("@prisma/client");
+import express from "express";
+import cors from "cors";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { PrismaClient } from "@prisma/client";
+import { config as dotenvConfig } from "dotenv";
 
+// Load environment variables from .env file
+dotenvConfig();
+
+// Initialize Prisma client
 const prisma = new PrismaClient();
-// create an express application instance
+
+// Create an Express application instance
 const app = express();
 
-// create http instance using app
-const http = require("http").Server(app);
+// Use CORS middleware
+app.use(cors());
+
+// Create HTTP server
+const httpServer = createServer(app);
 
 // Determine the protocol based on environment
 const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";
@@ -17,13 +27,11 @@ const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";
 let clientHost = process.env.CLIENT_HOST || "localhost";
 let clientPort = process.env.CLIENT_PORT || 3000;
 
-const socketIO = require("socket.io")(http, {
+// Import and configure Socket.IO
+const socketIO = new Server(httpServer, {
   cors: {
     origin: `${protocol}${clientHost}:${clientPort}`,
   },
 });
 
-// use cors middleware
-app.use(cors());
-
-module.exports = { app, http, socketIO, prisma };
+export { app, httpServer, socketIO, prisma };
