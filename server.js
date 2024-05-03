@@ -1,5 +1,5 @@
 import { app, httpServer, prisma } from "./init.js";
-import { setChatId } from "./lib/socketUtils.js";
+import { setChatIdOnServer } from "./lib/socketUtils.js";
 import { createSocketServer } from "./socketServer.js";
 import { createTelegramBot } from "./telegramBot.js";
 const PORT = process.env.PORT || 4000;
@@ -10,12 +10,8 @@ const bot = createTelegramBot();
 // open a connection with the client
 createSocketServer(bot);
 
-// bot event handler to receive "message" from telegram app
-// setChatId will store the chat id if it hasn't been set already
-bot.on("message", async (data) => {
-  // save the chatId to the db
-  setChatId(data, prisma);
-});
+// store the telegram chatID
+setChatIdOnServer(bot, prisma);
 
 //using app for home route
 app.get("/", (req, res) => {
