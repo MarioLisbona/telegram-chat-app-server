@@ -54,9 +54,6 @@ function createSocketServer(bot) {
 
     // event handler to receive "message" from telegram bot
     bot.on("message", async (data) => {
-      // save the chatId to the db
-      setChatId(data, prisma);
-
       // emit message to all connected clients
       socket.emit("telegramMessage", data);
     });

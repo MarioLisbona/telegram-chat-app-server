@@ -1,4 +1,5 @@
 import { app, httpServer, prisma } from "./init.js";
+import { setChatIdOnServer } from "./lib/socketUtils.js";
 import { createSocketServer } from "./socketServer.js";
 import { createTelegramBot } from "./telegramBot.js";
 const PORT = process.env.PORT || 4000;
@@ -8,6 +9,9 @@ const bot = createTelegramBot();
 
 // open a connection with the client
 createSocketServer(bot);
+
+// store the telegram chatID
+setChatIdOnServer(bot, prisma);
 
 //using app for home route
 app.get("/", (req, res) => {
