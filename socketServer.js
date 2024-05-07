@@ -4,6 +4,7 @@ import {
   handleMessage,
   handleNewUser,
   handleTyping,
+  handleDisconnect,
 } from "./lib/eventHandlers.js";
 
 //setting variables for users array and telegram chat ID
@@ -37,19 +38,12 @@ function createSocketServer(bot) {
 
     // event handler for a client disconnecting from the chat client
     socket.on("disconnect", () => {
-      console.log("🔥: A user disconnected");
-      //Updates the list of users when a user disconnects from the server
-      users = users.filter((user) => user.socketID !== socket.id);
-      console.log(users);
-      //Sends the list of users to the client
-      socketIO.emit("newUserResponse", users);
-      socket.disconnect();
+      handleDisconnect(socket, socketIO, users);
     });
 
     // event handler to receive "message" from telegram bot
     bot.on("message", async (data) => {
-      // emit message to all connected clients
-      socket.emit("telegramMessage", data);
+      handleTelegramMessage(socket, data);
     });
   });
 
