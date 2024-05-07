@@ -5,6 +5,7 @@ import {
   handleNewUser,
   handleTyping,
   handleDisconnect,
+  handleTelegramMessage,
 } from "./lib/eventHandlers.js";
 
 //setting variables for users array and telegram chat ID
@@ -12,7 +13,7 @@ let users = [];
 let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
-function createSocketServer(bot) {
+export function createSocketServer(bot) {
   // create a socket.io connection to the client
   socketIO.on("connection", async (socket) => {
     // connection message logged for each new client connection
@@ -46,8 +47,4 @@ function createSocketServer(bot) {
       handleTelegramMessage(socket, data);
     });
   });
-
-  return socketIO;
 }
-
-export { createSocketServer };
