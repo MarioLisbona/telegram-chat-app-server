@@ -1,65 +1,50 @@
 import { socketIO, prisma } from "./init.js";
-import { getChatId, setChatId } from "./lib/socketUtils.js";
+import { getChatId } from "./lib/socketUtils.js";
+import {
+  handleMessage,
+  handleNewUser,
+  handleTyping,
+  handleDisconnect,
+  handleTelegramMessage,
+} from "./lib/eventHandlers.js";
 
 //setting variables for users array and telegram chat ID
 let users = [];
 let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
-function createSocketServer(bot) {
+export function createSocketServer(bot) {
   // create a socket.io connection to the client
   socketIO.on("connection", async (socket) => {
+    // connection message logged for each new client connection
     console.log(`⚡: ${socket.id} user just connected!`);
 
     // get the chat ID from the db
     chatId = await getChatId(prisma);
 
-    // event handler call back for "messasge"
+    // event handler for messages received from the clients
     socket.on("message", (data) => {
-      // Receives the message from the chat client
-      // Sends the messages to all connected chat clients
-      socketIO.emit("messageResponse", data);
-
-      // sends the message to the telegram bot
-      let username = data.name;
-      let msg = `(${username}) - ${data.text}`;
-      bot.sendMessage(chatId, msg);
+      handleMessage(socketIO, bot, chatId, data);
     });
 
     //event handler for when a new user joins the server
     socket.on("newUser", (data) => {
-      //Adds the new user to the list of users
-      users.push(data);
-      console.log(users);
-      //Sends the list of users to the client
-      socketIO.emit("newUserResponse", users);
+      handleNewUser(socketIO, users, data);
     });
 
     // event handler for a user typing in the chat client
     socket.on("typing", (data) => {
-      socket.broadcast.emit("typingResponse", data);
-      console.log(data);
+      handleTyping(socket, data);
     });
 
     // event handler for a client disconnecting from the chat client
     socket.on("disconnect", () => {
-      console.log("🔥: A user disconnected");
-      //Updates the list of users when a user disconnects from the server
-      users = users.filter((user) => user.socketID !== socket.id);
-      console.log(users);
-      //Sends the list of users to the client
-      socketIO.emit("newUserResponse", users);
-      socket.disconnect();
+      handleDisconnect(socket, socketIO, users);
     });
 
     // event handler to receive "message" from telegram bot
     bot.on("message", async (data) => {
-      // emit message to all connected clients
-      socket.emit("telegramMessage", data);
+      handleTelegramMessage(socket, data);
     });
   });
-
-  return socketIO;
 }
-
-export { createSocketServer };
