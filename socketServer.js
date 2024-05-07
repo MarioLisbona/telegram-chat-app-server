@@ -1,5 +1,6 @@
 import { socketIO, prisma } from "./init.js";
-import { getChatId, setChatId } from "./lib/socketUtils.js";
+import { getChatId } from "./lib/socketUtils.js";
+import { handleNewUser } from "./lib/eventHandlers.js";
 
 //setting variables for users array and telegram chat ID
 let users = [];
@@ -28,11 +29,7 @@ function createSocketServer(bot) {
 
     //event handler for when a new user joins the server
     socket.on("newUser", (data) => {
-      //Adds the new user to the list of users
-      users.push(data);
-      console.log(users);
-      //Sends the list of users to the client
-      socketIO.emit("newUserResponse", users);
+      handleNewUser(socketIO, users, data);
     });
 
     // event handler for a user typing in the chat client
