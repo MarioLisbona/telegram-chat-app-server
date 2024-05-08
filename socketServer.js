@@ -45,9 +45,6 @@ export function createSocketServer(bot) {
 
   // event handler to receive "message" from telegram bot
   bot.on("message", async (data) => {
-    // emit message to all connected clients
-    socketIO.emit("telegramMessage", data);
-
     handleTelegramMessage(socketIO, data, bot);
   });
 }
