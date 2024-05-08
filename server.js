@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
+// Only being userd to test chat ID object returned from PSQL
 app.get("/get", async (req, res) => {
   const chats = await prisma.chat.findMany();
 
