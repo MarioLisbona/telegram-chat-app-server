@@ -41,10 +41,13 @@ export function createSocketServer(bot) {
     socket.on("disconnect", () => {
       handleDisconnect(socket, socketIO, users);
     });
+  });
 
-    // event handler to receive "message" from telegram bot
-    bot.on("message", async (data) => {
-      handleTelegramMessage(socket, data);
-    });
+  // event handler to receive "message" from telegram bot
+  bot.on("message", async (data) => {
+    // emit message to all connected clients
+    socketIO.emit("telegramMessage", data);
+
+    handleTelegramMessage(socketIO, data, bot);
   });
 }
