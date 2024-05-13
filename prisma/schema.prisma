@@ -31,5 +31,4 @@ model Message {
   sentFrom  String
 
   @@map("messages") // Specify the table name explicitly in lowercase
-
 }
