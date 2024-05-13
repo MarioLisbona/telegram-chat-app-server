@@ -40,7 +40,6 @@ app.get("/api", (req, res) => {
 app.get("/messages", (req, res) => {
   getAllMessages()
     .then((messages) => {
-      console.log("All messages:", messages);
       res.json(messages);
     })
     .catch((error) => {
