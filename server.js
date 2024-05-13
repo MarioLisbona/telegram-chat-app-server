@@ -2,6 +2,7 @@ import { app, httpServer, prisma } from "./init.js";
 import { setChatIdOnServer } from "./lib/socketUtils.js";
 import { createSocketServer } from "./socketServer.js";
 import { createTelegramBot } from "./telegramBot.js";
+import { getAllMessages } from "./lib/chatUtils.js";
 const PORT = process.env.PORT || 4000;
 
 // create an instance of the telegram bot
@@ -34,6 +35,16 @@ app.get("/get", async (req, res) => {
 app.get("/api", (req, res) => {
   const serverUrl = `${req.protocol}://${req.hostname}:${PORT}`;
   res.json({ serverUrl });
+});
+
+app.get("/messages", (req, res) => {
+  getAllMessages()
+    .then((messages) => {
+      res.json(messages);
+    })
+    .catch((error) => {
+      console.error("Error fetching messages:", error);
+    });
 });
 
 // using http to listen on port
