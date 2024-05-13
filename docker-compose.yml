@@ -4,12 +4,12 @@ services:
     image: postgres:14
     restart: always
     environment:
-      - POSTGRES_USER=mario
-      - POSTGRES_PASSWORD=123
-      - POSTGRES_DB=telegram_chat_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
 volumes:
   postgres:
