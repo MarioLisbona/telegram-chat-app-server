@@ -19,17 +19,11 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
-// Only being userd to test chat ID object returned from PSQL
-app.get("/get", async (req, res) => {
-  const chats = await prisma.chat.findMany();
-
-  // Convert BigInt values to strings, handling null values
-  const serializedChats = chats.map((chat) => ({
-    ...chat,
-    chatId: chat.chatId !== null ? chat.chatId.toString() : null, // Convert chatId to string if not null
-  }));
-
-  res.json(serializedChats);
+app.get("/chat", async function (req, res) {
+  // find the first chat object
+  const chatData = await prisma.chat.findFirst();
+  const chatTitle = chatData.title;
+  res.json(chatTitle);
 });
 
 app.get("/api", (req, res) => {
