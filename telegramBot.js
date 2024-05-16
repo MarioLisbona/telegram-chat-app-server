@@ -5,7 +5,7 @@ import { config as dotenvConfig } from "dotenv";
 dotenvConfig();
 
 // function to create and return a new TelegramBot instance
-function createTelegramBot() {
+export function createTelegramBot() {
   // assigning bot token from environment variables
   const BOT_TOKEN = process.env.BOT_TOKEN;
 
@@ -14,5 +14,3 @@ function createTelegramBot() {
 
   return bot;
 }
-
-export { createTelegramBot };
