@@ -2,7 +2,6 @@ import { socketIO, prisma } from "./init.js";
 import { getChatId } from "./lib/socketUtils.js";
 import {
   handleMessage,
-  handleNewUser,
   handleTyping,
   handleDisconnect,
   handleTelegramMessage,
