@@ -2,14 +2,13 @@ import { socketIO, prisma } from "./init.js";
 import { getChatId } from "./lib/socketUtils.js";
 import {
   handleMessage,
-  handleNewUser,
   handleTyping,
   handleDisconnect,
   handleTelegramMessage,
 } from "./lib/eventHandlers.js";
 
-//setting variables for users array and telegram chat ID
-let users = [];
+//setting variable for telegram chat ID
+
 let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
@@ -27,11 +26,6 @@ export function createSocketServer(bot) {
       handleMessage(socketIO, bot, chatId, data);
     });
 
-    //event handler for when a new user joins the server
-    socket.on("newUser", (data) => {
-      handleNewUser(socketIO, users, data);
-    });
-
     // event handler for a user typing in the chat client
     socket.on("typing", (data) => {
       handleTyping(socket, data);
@@ -39,7 +33,7 @@ export function createSocketServer(bot) {
 
     // event handler for a client disconnecting from the chat client
     socket.on("disconnect", () => {
-      handleDisconnect(socket, socketIO, users);
+      handleDisconnect(socket, socketIO);
     });
   });
 
