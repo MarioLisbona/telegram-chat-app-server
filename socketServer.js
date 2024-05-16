@@ -27,11 +27,6 @@ export function createSocketServer(bot) {
       handleMessage(socketIO, bot, chatId, data);
     });
 
-    //event handler for when a new user joins the server
-    socket.on("newUser", (data) => {
-      handleNewUser(socketIO, users, data);
-    });
-
     // event handler for a user typing in the chat client
     socket.on("typing", (data) => {
       handleTyping(socket, data);
