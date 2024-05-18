@@ -31,6 +31,8 @@ let clientPort = process.env.CLIENT_PORT || 3000;
 const socketIO = new Server(httpServer, {
   cors: {
     origin: `${protocol}${clientHost}:${clientPort}`,
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
