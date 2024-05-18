@@ -27,7 +27,8 @@ app.get("/chat", async function (req, res) {
 });
 
 app.get("/api", (req, res) => {
-  const serverUrl = `${req.protocol}://${req.hostname}:${PORT}`;
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol;
+  const serverUrl = `${protocol}://${req.hostname}:${PORT}`;
   res.json({ serverUrl });
 });
 
