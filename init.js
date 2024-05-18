@@ -21,7 +21,7 @@ app.use(cors());
 const httpServer = createServer(app);
 
 // Determine the protocol based on environment
-const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";
+const protocol = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 
 // connection variables for socket connection
 let clientHost = process.env.CLIENT_HOST || "localhost";
