@@ -27,6 +27,11 @@ const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";
 let clientHost = process.env.CLIENT_HOST || "localhost";
 let clientPort = process.env.CLIENT_PORT || 3000;
 
+console.log(
+  "createing socket connection",
+  `${protocol}${clientHost}:${clientPort}`
+);
+
 // Import and configure Socket.IO
 const socketIO = new Server(httpServer, {
   cors: {
