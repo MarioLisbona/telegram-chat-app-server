@@ -23,12 +23,12 @@ const httpServer = createServer(app);
 // Determine the protocol based on environment
 const protocol = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 
-// connection variables for socket connection
+// connection variables for cors origin
 let clientHost = process.env.CLIENT_HOST || "localhost";
-let clientPort = process.env.CLIENT_PORT || 35000;
+let clientPort = process.env.CLIENT_PORT || 4000;
 
 console.log(
-  "Creating socket connection to-->",
+  "Creating cors origin variables-->",
   `${protocol}${clientHost}:${clientPort}`
 );
 
