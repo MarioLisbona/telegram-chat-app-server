@@ -25,10 +25,10 @@ const protocol = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 
 // connection variables for socket connection
 let clientHost = process.env.CLIENT_HOST || "localhost";
-let clientPort = process.env.CLIENT_PORT || 3000;
+let clientPort = process.env.CLIENT_PORT || 35000;
 
 console.log(
-  "createing socket connection",
+  "Creating socket connection to-->",
   `${protocol}${clientHost}:${clientPort}`
 );
 
