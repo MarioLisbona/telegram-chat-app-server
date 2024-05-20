@@ -34,7 +34,7 @@ export function createSocketServer(bot) {
 
       // event handler for a client disconnecting from the chat client
       socket.on("disconnect", () => {
-        handleDisconnect(socket, socketIO);
+        handleDisconnect(socket);
       });
     } catch (error) {
       console.error("Error during socket connection:", error);
