@@ -21,16 +21,23 @@ app.use(cors());
 const httpServer = createServer(app);
 
 // Determine the protocol based on environment
-const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";
+const protocol = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 
-// connection variables for socket connection
+// connection variables for cors origin
 let clientHost = process.env.CLIENT_HOST || "localhost";
-let clientPort = process.env.CLIENT_PORT || 3000;
+let clientPort = process.env.CLIENT_PORT || 4000;
+
+console.log(
+  "Creating cors origin variables-->",
+  `${protocol}${clientHost}:${clientPort}`
+);
 
 // Import and configure Socket.IO
 const socketIO = new Server(httpServer, {
   cors: {
     origin: `${protocol}${clientHost}:${clientPort}`,
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 

@@ -14,6 +14,18 @@ createSocketServer(bot);
 // store the telegram chatID
 setChatIdOnServer(bot, prisma);
 
+// Middleware to set CORS headers
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Change * to the specific origin if needed
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 //using app for home route
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
@@ -27,7 +39,8 @@ app.get("/chat", async function (req, res) {
 });
 
 app.get("/api", (req, res) => {
-  const serverUrl = `${req.protocol}://${req.hostname}:${PORT}`;
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol;
+  const serverUrl = `${protocol}://${req.hostname}:${PORT}`;
   res.json({ serverUrl });
 });
 
