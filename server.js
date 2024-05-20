@@ -2,7 +2,7 @@ import { app, httpServer, prisma } from "./init.js";
 import { setChatIdOnServer } from "./lib/socketUtils.js";
 import { createSocketServer } from "./socketServer.js";
 import { createTelegramBot } from "./telegramBot.js";
-import { getAllMessages } from "./lib/chatUtils.js";
+import { getAllMessages, getChatData } from "./lib/chatUtils.js";
 import { asyncHandler } from "./lib/asyncHandler.js";
 import { errorHandler } from "./lib/errorHandler.js";
 const PORT = process.env.PORT || 4000;
@@ -36,12 +36,14 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
-app.get("/chat", async function (req, res) {
-  // find the first chat object
-  const chatData = await prisma.chat.findFirst();
-  const chatTitle = chatData.title;
-  res.json(chatTitle);
-});
+app.get(
+  "/chat",
+  asyncHandler(async (req, res) => {
+    const chatData = await getChatData();
+    const chatTitle = chatData.title;
+    res.json(chatTitle);
+  })
+);
 
 app.get(
   "/messages",
