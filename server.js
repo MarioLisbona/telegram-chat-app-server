@@ -38,12 +38,6 @@ app.get("/chat", async function (req, res) {
   res.json(chatTitle);
 });
 
-app.get("/api", (req, res) => {
-  const protocol = req.headers["x-forwarded-proto"] || req.protocol;
-  const serverUrl = `${protocol}://${req.hostname}:${PORT}`;
-  res.json({ serverUrl });
-});
-
 app.get("/messages", (req, res) => {
   getAllMessages()
     .then((messages) => {
