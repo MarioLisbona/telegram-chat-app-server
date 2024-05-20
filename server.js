@@ -4,7 +4,7 @@ import { createSocketServer } from "./socketServer.js";
 import { createTelegramBot } from "./telegramBot.js";
 import { getAllMessages, getChatData } from "./lib/chatUtils.js";
 import { asyncHandler } from "./lib/asyncHandler.js";
-import { errorHandler } from "./lib/errorHandler.js";
+import { errorHandler, corsHandler } from "./lib/errorHandler.js";
 const PORT = process.env.PORT || 4000;
 
 // create an instance of the telegram bot
@@ -17,16 +17,7 @@ createSocketServer(bot);
 setChatIdOnServer(bot, prisma);
 
 // Middleware to set CORS headers
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Change * to the specific origin if needed
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+app.use(corsHandler);
 
 // Use the error handler middleware
 app.use(errorHandler);
