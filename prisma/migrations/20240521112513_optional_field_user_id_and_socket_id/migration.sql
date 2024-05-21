@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "messages" ALTER COLUMN "userId" DROP NOT NULL,
+ALTER COLUMN "socketID" DROP NOT NULL;
