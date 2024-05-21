@@ -27,7 +27,7 @@ model Message {
   name      String
   userId    String
   socketID  String
-  datetime DateTime 
+  createdAt DateTime 
   sentFrom  String
 
   @@map("messages") // Specify the table name explicitly in lowercase
