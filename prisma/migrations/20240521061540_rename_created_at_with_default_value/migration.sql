@@ -6,4 +6,7 @@
 */
 -- AlterTable
 ALTER TABLE "messages"
-RENAME COLUMN "datetime" TO "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+RENAME COLUMN "datetime" TO "createdAt";
+
+ALTER TABLE "messages"
+ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP;
