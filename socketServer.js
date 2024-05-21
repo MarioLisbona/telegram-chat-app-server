@@ -12,7 +12,7 @@ import {
 let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
-export function createSocketServer(bot) {
+export const createSocketServer = (bot) => {
   // create a socket.io connection to the client
   socketIO.on("connection", async (socket) => {
     try {
@@ -51,4 +51,4 @@ export function createSocketServer(bot) {
       // Handle the error appropriately
     }
   });
-}
+};
