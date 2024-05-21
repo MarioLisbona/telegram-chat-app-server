@@ -6,5 +6,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "messages",
-RENAME COLUMN "datetime" TO "createdAt" TIMESTAMP(3) NOT NULL;
+ALTER TABLE "messages"
+RENAME COLUMN "datetime" TO "createdAt";
