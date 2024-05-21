@@ -25,8 +25,8 @@ model Message {
   id        Int      @id @default(autoincrement())
   text      String
   name      String
-  userId    String
-  socketID  String
+  userId    String?
+  socketID  String?
   createdAt DateTime 
   sentFrom  String
 
