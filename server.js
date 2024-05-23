@@ -5,6 +5,7 @@ import { createTelegramBot } from "./telegramBot.js";
 import { getAllMessages, getChatData } from "./lib/chatUtils.js";
 import { asyncHandler } from "./lib/asyncHandler.js";
 import { errorHandler, corsHandler } from "./lib/errorHandler.js";
+import { getFirstAndLast20Coins } from "./lib/tokenPrice.js";
 const PORT = process.env.PORT || 4000;
 
 // create an instance of the telegram bot
@@ -41,6 +42,19 @@ app.get(
   asyncHandler(async (req, res) => {
     const messages = await getAllMessages();
     res.json(messages);
+  })
+);
+
+app.get(
+  "/api/tokens",
+  asyncHandler(async (req, res) => {
+    const { firstTwentyPrices, lastTwentyPrices } =
+      await getFirstAndLast20Coins();
+
+    console.log("First 20 ->\n", firstTwentyPrices);
+    console.log("Last 20 ->\n", lastTwentyPrices);
+
+    res.json({ firstTwentyPrices, lastTwentyPrices });
   })
 );
 
