@@ -49,7 +49,7 @@ app.get(
   "/api/ticker",
   asyncHandler(async (req, res) => {
     const data = await getCoinTickerData();
-    const tickerData = data.slice(0, 20);
+    const tickerData = data.slice(0, 30);
     res.json(tickerData);
   })
 );
