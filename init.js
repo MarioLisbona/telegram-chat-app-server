@@ -27,11 +27,6 @@ const protocol = process.env.NODE_ENV === "production" ? "wss://" : "ws://";
 let clientHost = process.env.CLIENT_HOST || "localhost";
 let clientPort = process.env.CLIENT_PORT || 4000;
 
-console.log(
-  "Creating cors origin variables-->",
-  `${protocol}${clientHost}:${clientPort}`
-);
-
 // Import and configure Socket.IO
 const socketIO = new Server(httpServer, {
   cors: {
