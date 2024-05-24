@@ -44,7 +44,7 @@ export const createSocketServer = (bot) => {
           `${data.name} said look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `
         );
         const messageObject = {
-          text: `${data.name} said look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `,
+          text: `Look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `,
           // coin: coin,
           name: data.name,
           userId: data.userId,
