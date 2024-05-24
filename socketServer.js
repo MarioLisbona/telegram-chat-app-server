@@ -5,6 +5,7 @@ import {
   handleTyping,
   handleDisconnect,
   handleTelegramMessage,
+  handleTokenClick,
 } from "./lib/eventHandlers.js";
 
 //setting variable for telegram chat ID
@@ -37,23 +38,9 @@ export const createSocketServer = (bot) => {
         handleDisconnect(socket);
       });
 
+      // Event handler for ticker token click
       socket.on("tokenClick", (data) => {
-        console.log("data", data);
-        console.log(
-          "Logging Token click--->",
-          `${data.name} said look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `
-        );
-        const messageObject = {
-          text: `Look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `,
-          // coin: coin,
-          name: data.name,
-          userId: data.userId,
-          socketID: socket.id,
-          createdAt: data.createdAt,
-        };
-
-        console.log(messageObject);
-        socketIO.emit("tokenClickResponse", messageObject);
+        handleTokenClick(socketIO, data, bot, chatId);
       });
     } catch (error) {
       console.error("Error during socket connection:", error);
