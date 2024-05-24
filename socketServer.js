@@ -5,6 +5,7 @@ import {
   handleTyping,
   handleDisconnect,
   handleTelegramMessage,
+  handleTokenClick,
 } from "./lib/eventHandlers.js";
 
 //setting variable for telegram chat ID
@@ -35,6 +36,11 @@ export const createSocketServer = (bot) => {
       // event handler for a client disconnecting from the chat client
       socket.on("disconnect", () => {
         handleDisconnect(socket);
+      });
+
+      // Event handler for ticker token click
+      socket.on("tokenClick", (data) => {
+        handleTokenClick(socketIO, data, bot, chatId);
       });
     } catch (error) {
       console.error("Error during socket connection:", error);
