@@ -36,6 +36,25 @@ export const createSocketServer = (bot) => {
       socket.on("disconnect", () => {
         handleDisconnect(socket);
       });
+
+      socket.on("tokenClick", (data) => {
+        console.log("data", data);
+        console.log(
+          "Logging Token click--->",
+          `${data.name} said look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `
+        );
+        const messageObject = {
+          text: `${data.name} said look at the price of ${data.coin.name}!\nIt just hit USD$${data.coin.current_price}, a change of %${data.coin.price_change_percentage_24h}\nIts market cap is now USD$${data.coin.market_cap} `,
+          // coin: coin,
+          name: data.name,
+          userId: data.userId,
+          socketID: socket.id,
+          createdAt: data.createdAt,
+        };
+
+        console.log(messageObject);
+        socketIO.emit("tokenClickResponse", messageObject);
+      });
     } catch (error) {
       console.error("Error during socket connection:", error);
       socket.emit("error", "Internal Server Error");
