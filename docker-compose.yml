@@ -2,6 +2,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:14
+    container_name: ${CONTAINER_NAME}
     restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
