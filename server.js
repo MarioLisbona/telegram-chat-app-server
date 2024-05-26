@@ -23,11 +23,12 @@ app.use(corsHandler);
 // Use the error handler middleware
 app.use(errorHandler);
 
-//using app for home route
+//home route
 app.get("/", (req, res) => {
   res.json({ message: "Hello from the Home Page" });
 });
 
+//route to get chat title
 app.get(
   "/chat",
   asyncHandler(async (req, res) => {
@@ -37,6 +38,7 @@ app.get(
   })
 );
 
+//route to get messages
 app.get(
   "/messages",
   asyncHandler(async (req, res) => {
@@ -45,6 +47,7 @@ app.get(
   })
 );
 
+//route to get ticker data
 app.get(
   "/api/ticker",
   asyncHandler(async (req, res) => {
