@@ -9,7 +9,6 @@ import {
 } from "./lib/eventHandlers.js";
 
 //setting variable for telegram chat ID
-
 let chatId = "";
 
 // function to create and return a socket.io instance with a connection to the client
